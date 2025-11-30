@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsent Confessions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .confession-form {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .confession-form:hover {
+            transform: translateY(-5px);
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-title i {
+            color: #3498db;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 20px;
+            transition: border 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .char-count {
+            text-align: right;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .submit-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+        }
+        
+        .submit-btn:hover {
+            background: #2980b9;
+        }
+        
+        .confessions-grid {
+            flex: 2;
+            min-width: 300px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .confession-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .confession-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .confession-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: #3498db;
+        }
+        
+        .confession-text {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #2c3e50;
+        }
+        
+        .confession-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+        
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #7f8c8d;
+            border-top: 1px solid #e1e8ed;
+            margin-top: 40px;
+        }
+        
+        .disclaimer {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Unsent Confessions</h1>
+            <p class="tagline">A safe space to share the words you never sent. No names, no pressure — just honesty.</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="confession-form">
+                <h2 class="form-title"><i class="fas fa-pen"></i> Share Your Confession</h2>
+                <textarea id="confessionText" placeholder="What's the truth sitting in your chest that you wish they knew?"></textarea>
+                <div class="char-count"><span id="charCount">0</span>/1000 characters</div>
+                <button class="submit-btn" id="submitBtn"><i class="fas fa-paper-plane"></i> Share Anonymously</button>
+            </div>
+            
+            <div class="confessions-grid" id="confessionsGrid">
+                <div class="empty-state">
+                    <i class="far fa-envelope-open"></i>
+                    <h3>No confessions yet</h3>
+                    <p>Be the first to share your unsent thoughts</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p class="disclaimer">All confessions are anonymous. By sharing, you agree that your message may be displayed publicly. Be kind to yourself and others.</p>
+            <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for unspoken words</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confessionText = document.getElementById('confessionText');
+            const charCount = document.getElementById('charCount');
+            const submitBtn = document.getElementById('submitBtn');
+            const confessionsGrid = document.getElementById('confessionsGrid');
+            
+            // Sample confessions to start with
+            const sampleConfessions = [
+                "There's a version of you that lives only in my mind—a collection of glances, half-smiles, and conversations that probably meant more to me than they ever did to you.",
+                "I wish I had told you how I felt when I had the chance. Now it's too late, and that regret follows me everywhere.",
+                "Every song on the radio reminds me of you. I don't know if I'll ever be able to listen to music the same way again.",
+                "I still look for you in crowded rooms, even though I know you won't be there. Old habits die hard, I guess.",
+                "I'm sorry for the words I never said. My silence wasn't indifference; it was fear."
+            ];
+            
+            // Load confessions from localStorage or initialize with samples
+            let confessions = JSON.parse(localStorage.getItem('unsentConfessions')) || [];
+            
+            // If no confessions in storage, add sample ones
+            if (confessions.length === 0) {
+                sampleConfessions.forEach(confession => {
+                    confessions.push({
+                        text: confession,
+                        timestamp: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toISOString()
+                    });
+                });
+                localStorage.setItem('unsentConfessions', JSON.stringify(confessions));
+            }
+            
+            // Display confessions
+            function displayConfessions() {
+                confessionsGrid.innerHTML = '';
+                
+                if (confessions.length === 0) {
+                    confessionsGrid.innerHTML = `
+                        <div class="empty-state">
+                            <i class="far fa-envelope-open"></i>
+                            <h3>No confessions yet</h3>
+                            <p>Be the first to share your unsent thoughts</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Sort by timestamp (newest first)
+                const sortedConfessions = [...confessions].sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+                
+                sortedConfessions.forEach(confession => {
+                    const date = new Date(confession.timestamp);
+                    const timeAgo = getTimeAgo(date);
+                    
+                    const confessionCard = document.createElement('div');
+                    confessionCard.className = 'confession-card';
+                    confessionCard.innerHTML = `
+                        <div class="confession-text">"${confession.text}"</div>
+                        <div class="confession-meta">
+                            <span>Anonymous</span>
+                            <span>${timeAgo}</span>
+                        </div>
+                    `;
+                    
+                    confessionsGrid.appendChild(confessionCard);
+                });
+            }
+            
+            // Character count update
+            confessionText.addEventListener('input', function() {
+                const count = confessionText.value.length;
+                charCount.textContent = count;
+                
+                if (count > 1000) {
+                    charCount.style.color = '#e74c3c';
+                } else {
+                    charCount.style.color = '#7f8c8d';
+                }
+            });
+            
+            // Submit confession
+            submitBtn.addEventListener('click', function() {
+                const text = confessionText.value.trim();
+                
+                if (text === '') {
+                    alert('Please write something before sharing.');
+                    return;
+                }
+                
+                if (text.length > 1000) {
+                    alert('Your confession is too long. Please keep it under 1000 characters.');
+                    return;
+                }
+                
+                // Add new confession
+                confessions.push({
+                    text: text,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Save to localStorage
+                localStorage.setItem('unsentConfessions', JSON.stringify(confessions));
+                
+                // Clear textarea
+                confessionText.value = '';
+                charCount.textContent = '0';
+                charCount.style.color = '#7f8c8d';
+                
+                // Update display
+                displayConfessions();
+                
+                // Show confirmation
+                alert('Thank you for sharing your confession. It has been added anonymously.');
+            });
+            
+            // Helper function to get time ago
+            function getTimeAgo(date) {
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - date) / 1000);
+                
+                if (diffInSeconds < 60) return 'Just now';
+                if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+                if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+                if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+                return `${Math.floor(diffInSeconds / 2592000)} months ago`;
+            }
+            
+            // Initial display
+            displayConfessions();
+        });
+    </script>
+</body>
+</html>
